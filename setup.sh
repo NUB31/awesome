@@ -5,7 +5,9 @@ sudo apt install -y xorg awesome lightdm feh picom thunar
 # optional
 sudo apt install -y firefox-esr nvidia-driver kitty lxappearance git gedit thunderbird
 
-cp -r ./* ~/
+cp -r ./.config ~/
+cp -r ./.wallpapers ~/
+cp -r ./.icons ~/
 
 sudo mkdir /usr/share/cursors
 sudo mkdir /usr/share/cursors/xorg-x11
