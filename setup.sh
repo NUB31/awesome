@@ -4,8 +4,10 @@ apt update -y
 apt upgrade -y
 apt install -y xorg awesome lightdm feh picom
 
+systemctl enable lightdm
+
 # optional
-apt install -y firefox-esr kitty lxappearance git thunderbird nautilus gedit
+apt install -y firefox-esr kitty lxappearance git thunderbird nautilus gedit git sudo
 
 cp -r ./.config ~/
 cp -r ./.wallpapers ~/
