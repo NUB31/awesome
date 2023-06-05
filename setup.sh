@@ -12,6 +12,3 @@ cp -r ./.icons ~/
 sudo mkdir /usr/share/cursors
 sudo mkdir /usr/share/cursors/xorg-x11
 sudo ln -s ~/.icons /usr/share/cursors/xorg-x11/
-
-# optional
-lxappearance
