@@ -3,7 +3,7 @@ sudo apt upgrade -y
 sudo apt install -y xorg awesome lightdm feh picom thunar
 
 # optional
-sudo apt install -y firefox-esr nvidia-driver kitty lxappearance git gedit thunderbird
+sudo apt install -y firefox-esr kitty lxappearance git gedit thunderbird
 
 cp -r ./.config ~/
 cp -r ./.wallpapers ~/
