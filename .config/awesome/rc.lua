@@ -164,7 +164,7 @@ local tasklist_buttons = gears.table.join(
 		awful.client.focus.byidx(-1)
 	end))
 
-local si = 1
+
 awful.screen.connect_for_each_screen(function(s)
 	-- Each screen has its own tag table.
 	awful.tag({ "General", "Browser", "Code" }, s, awful.layout.layouts[1])
