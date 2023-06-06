@@ -40,7 +40,7 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
 editor = "code"
-fileBrowser = "nautilus"
+fileBrowser = "nemo"
 webBrowser = "firefox"
 runPrompt = "rofi options -theme Monokai -show drun"
 
