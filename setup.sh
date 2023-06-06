@@ -1,3 +1,7 @@
+#!bin/sh
+SCRIPT=$(realpath "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+
 sudo pacman -S git
 cd /opt
 sudo git clone https://aur.archlinux.org/yay-git.git
@@ -14,9 +18,11 @@ systemctl enable sddm
 # optional
 yay -S firefox kitty lxappearance git thunderbird nautilus gedit
 
-cp -r ./.config ~/
-cp -r ./.wallpapers ~/
-cp -r ./.icons ~/
+cd $SCRIPTPATH
+
+cp -r .config ~/
+cp -r .wallpapers ~/
+cp -r .icons ~/
 
 mkdir /usr/share/cursors
 mkdir /usr/share/cursors/xorg-x11
