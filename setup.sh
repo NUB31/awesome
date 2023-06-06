@@ -21,3 +21,5 @@ cp -r ./.icons ~/
 mkdir /usr/share/cursors
 mkdir /usr/share/cursors/xorg-x11
 ln -s ~/.icons /usr/share/cursors/xorg-x11/
+
+echo 'Section "InputClass"Identifier "My Mouse"Driver "libinput"MatchIsPointer "yes"Option "AccelProfile" "flat"EndSection' > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
