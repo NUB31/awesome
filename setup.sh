@@ -1,13 +1,18 @@
-echo "deb http://deb.debian.org/debian bookworm main non-free-firmware\ndeb-src http://deb.debian.org/debian bookworm main non-free-firmware\n\ndeb http://deb.debian.org/debian-security/ bookworm-security main non-free-firmware\ndeb-src http://deb.debian.org/debian-security/ bookworm-security main non-free-firmware\n\ndeb http://deb.debian.org/debian bookworm-updates main non-free-firmware\ndeb-src http://deb.debian.org/debian bookworm-updates main non-free-firmware" > /etc/apt/sources.list
+sudo pacman -S git
+cd /opt
+sudo git clone https://aur.archlinux.org/yay-git.git
+sudo chown -R $USER ./yay-git
+cd yay-git
+makepkg -si
 
-apt update -y
-apt upgrade -y
-apt install -y xorg awesome lightdm feh picom
+yay -Syu
 
-systemctl enable lightdm
+yay -S xorg xterm awesome-git sddm feh picom
+
+systemctl enable sddm
 
 # optional
-apt install -y firefox-esr kitty lxappearance git thunderbird nautilus gedit git sudo
+yay -S firefox kitty lxappearance git thunderbird nautilus gedit 
 
 cp -r ./.config ~/
 cp -r ./.wallpapers ~/
