@@ -7,12 +7,12 @@ makepkg -si
 
 yay -Syu
 
-yay -S xorg xterm awesome-git sddm feh picom
+yay -S xorg xterm awesome-git picom-git sddm feh
 
 systemctl enable sddm
 
 # optional
-yay -S firefox kitty lxappearance git thunderbird nautilus gedit 
+yay -S firefox kitty lxappearance git thunderbird nautilus gedit
 
 cp -r ./.config ~/
 cp -r ./.wallpapers ~/
