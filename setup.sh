@@ -36,7 +36,7 @@ yay -S --noconfirm xorg xterm awesome-git sddm
 systemctl enable sddm
 
 # Config defined applications
-if [ $REPLY == 1 ]
+if [ $REPLY == 2 ]
 then
   echo "Copying wallpaper"
   cp -r .wallpapers ~/
@@ -45,7 +45,7 @@ then
 fi
 
 # Personal prefrence
-if [ $REPLY == 2 ]
+if [ $REPLY == 3 ]
 then
   echo "Installing personal programs"
   yay -S --noconfirm lxappearance thunderbird pavucontrol steam wine lutris minecraft-launcher rider yuzu openvpn neofetch
