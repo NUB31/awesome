@@ -81,7 +81,7 @@ echo "Settings kitty as default terminal for nemo file browser"
 gsettings set org.cinnamon.desktop.default-applications.terminal exec kitty
 
 # Final command if neofetch is installed
-if [ $REPLY == 2 ]
+if [ $REPLY == 3 ]
 then
   neofetch
 fi
