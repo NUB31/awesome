@@ -2,6 +2,11 @@
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
+if [ "$EUID" -ne 0 ]
+  then echo "Please run using sudo (sudo sh setup.sh)"
+  exit
+fi
+
 PS3="Please select the configuration you want: "
 select character in "Minimal  (Only includes the strictly necesary packages: xorg, awesome etc.)" "Default  (Includes packages requried by the included configuration: feh, picom, rofi etc.)" "Full  (Also includes some packages i use: wine, steam, lutris, rider, thunderbird etc.)"; 
 do   
@@ -20,11 +25,11 @@ sudo chown -R $USER ./yay-git
 cd yay-git
 makepkg -si
 
-yay -Syu
+yay -Syu --noconfirm
 
 echo "Installing xorg, awesome"
 # System critical
-yay -S xorg xterm awesome-git sddm 
+yay -S --noconfirm xorg xterm awesome-git sddm 
 systemctl enable sddm
 
 # Config defined applications
@@ -33,14 +38,14 @@ then
   echo "Copying wallpaper"
   cp -r .wallpapers ~/
   echo "Installing config specific programs"
-  yay -S feh picom-git rofi firefox kitty visual-studio-code-bin Adwaita-dark Adwaita nemo
+  yay -S --noconfirm feh picom-git rofi firefox kitty visual-studio-code-bin Adwaita-dark Adwaita nemo
 fi
 
 # Personal prefrence
 if [ $REPLY == 2 ]
 then
   echo "Installing personal programs"
-  yay -S lxappearance thunderbird pavucontrol steam wine lutris minecraft-launcher rider yuzu openvpn
+  yay -S --noconfirm lxappearance thunderbird pavucontrol steam wine lutris minecraft-launcher rider yuzu openvpn neofetch
 fi
 
 cd $SCRIPTPATH
@@ -71,3 +76,9 @@ done
 
 echo "Settings kitty as default terminal for nemo file browser"
 gsettings set org.cinnamon.desktop.default-applications.terminal exec kitty
+
+# Final command if neofetch is installed
+if [ $REPLY == 2 ]
+then
+  neofetch
+fi
