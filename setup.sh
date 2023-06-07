@@ -8,7 +8,7 @@ if [ "$EUID" -ne 0 ]
 fi
 
 PS3="Please select the configuration you want: "
-select character in "Minimal  (Only includes the strictly necesary packages: xorg, awesome etc.)" "Default  (Includes packages requried by the included configuration: feh, picom, rofi etc.)" "Full  (Also includes some packages i use: wine, steam, lutris, rider, thunderbird etc.)"; 
+select character in "Minimal  (Only includes the strictly necesary packages: xorg, awesome etc.)" "Default  (Includes packages requried by the included configuration: feh, picom, rofi etc.)" "Full    (Also includes some packages i use: wine, steam, lutris, rider, thunderbird etc.)"; 
 do   
   if [ ! -z "$character" ] ;     
   then        
