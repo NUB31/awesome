@@ -24,7 +24,7 @@ then
   git clone https://aur.archlinux.org/yay-git.git
   chown -R $USER ./yay-git
   cd yay-git
-  makepkg -si
+  makepkg --asroot -si
 fi
 
 echo "Updating installed packages"
