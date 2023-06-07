@@ -40,7 +40,7 @@ fi
 if [ $REPLY == 2 ]
 then
   echo "Installing personal programs"
-  yay -S lxappearance thunderbird pavucontrol steam wine lutris minecraft-launcher rider yuzu 
+  yay -S lxappearance thunderbird pavucontrol steam wine lutris minecraft-launcher rider yuzu openvpn
 fi
 
 cd $SCRIPTPATH
