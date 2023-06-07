@@ -80,7 +80,7 @@ done
 # Config defined applications
 if [ $REPLY == 2 ]
 then
-  echo "Settings kitty as default terminal for nemo file browser"
+  echo "Setting kitty as default terminal for nemo file browser"
   gsettings set org.cinnamon.desktop.default-applications.terminal exec kitty
 fi
 
