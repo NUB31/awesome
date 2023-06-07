@@ -61,7 +61,7 @@ cp -r .config ~/
 while true; do
     read -p "Do you wish to use the provided cursor (Bibata-Modern-Ice)? " yn
     case $yn in
-        [Yy]* ) sudo bash -c "cp -r .icons ~/; mkdir /usr/share/cursors; mkdir /usr/share/cursors/xorg-x11; ln -s ~/.icons /usr/share/cursors/xorg-x11/";;
+        [Yy]* ) sudo bash -c "cp -r .icons ~/; mkdir /usr/share/cursors; mkdir /usr/share/cursors/xorg-x11; ln -s ~/.icons /usr/share/cursors/xorg-x11/"; break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
@@ -71,7 +71,7 @@ done
 while true; do
     read -p "Do you wish to disable mouse acceleration? " yn
     case $yn in
-        [Yy]* ) sudo bash -c "echo 'Section \"InputClass\"Identifier \"My Mouse\"Driver \"libinput\"MatchIsPointer \"yes\"Option \"AccelProfile\" \"flat\"EndSection' > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf";;
+        [Yy]* ) sudo bash -c "echo 'Section \"InputClass\"Identifier \"My Mouse\"Driver \"libinput\"MatchIsPointer \"yes\"Option \"AccelProfile\" \"flat\"EndSection' > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf"; break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
