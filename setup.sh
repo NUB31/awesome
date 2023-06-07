@@ -61,7 +61,7 @@ cp -r .config ~/
 while true; do
     read -p "Do you wish to use the provided cursor (Bibata-Modern-Ice)? " yn
     case $yn in
-        [Yy]* ) sudo bash -c "cp -r .icons ~/; mkdir /usr/share/cursors; mkdir /usr/share/cursors/xorg-x11; ln -s ~/.icons /usr/share/cursors/xorg-x11/"; break;;
+        [Yy]* ) cp -r .icons ~/; mkdir /usr/share/cursors; mkdir /usr/share/cursors/xorg-x11; ln -s ~/.icons /usr/share/cursors/xorg-x11/;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
