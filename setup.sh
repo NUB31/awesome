@@ -2,7 +2,7 @@
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-if [ "$EUID" -ne 0 ]
+if [ "$USER" != "root" ]
   then echo "Please run using sudo (sudo sh setup.sh)"
   exit
 fi
