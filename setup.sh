@@ -16,15 +16,24 @@ do
   fi; 
 done
 
-echo "Installing yay"
+if ! command -v git &> /dev/null
+then
+  echo "git is not installed. Starting git installation"
+  pacman -S git
+fi
 
-sudo pacman -S git
-cd /opt
-sudo git clone https://aur.archlinux.org/yay-git.git
-sudo chown -R $USER ./yay-git
-cd yay-git
-makepkg -si
+if ! command -v yay &> /dev/null
+then
+  echo "yay is not installed. Starting yay installation"
+  pacman -S git
+  cd /opt
+  git clone https://aur.archlinux.org/yay-git.git
+  chown -R $USER ./yay-git
+  cd yay-git
+  makepkg -si
+fi
 
+echo "Updating installed packages"
 yay -Syu --noconfirm
 
 echo "Installing xorg, awesome"
