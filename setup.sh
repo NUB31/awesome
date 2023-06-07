@@ -19,7 +19,7 @@ done
 if ! command -v git &> /dev/null
 then
   echo "git is not installed. Starting git installation"
-  pacman -S git
+  pacman -S --noconfirm git
 fi
 
 if ! command -v yay &> /dev/null
