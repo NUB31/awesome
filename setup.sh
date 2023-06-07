@@ -2,9 +2,20 @@
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-if [ "$USER" != "root" ]
-  then echo "Please run using sudo (sudo sh setup.sh)"
+if [ "$USER" == "root" ]
+  then echo "Do not run this script as sudo (sh start.sh)"
   exit
+fi
+
+if ! command -v yay &> /dev/null
+then
+  echo "yay is not installed. Starting yay installation"
+  sudo pacman --noconfirm -S git
+  cd /opt
+  sudo git clone https://aur.archlinux.org/yay-git.git
+  sudo chown -R $USER ./yay-git
+  cd yay-git
+  makepkg -si
 fi
 
 PS3="Please select the configuration you want: "
@@ -50,7 +61,7 @@ cp -r .config ~/
 while true; do
     read -p "Do you wish to use the provided cursor (Bibata-Modern-Ice)? " yn
     case $yn in
-        [Yy]* ) cp -r .icons ~/; mkdir /usr/share/cursors; mkdir /usr/share/cursors/xorg-x11; ln -s ~/.icons /usr/share/cursors/xorg-x11/;;
+        [Yy]* ) su; cp -r .icons ~/; mkdir /usr/share/cursors; mkdir /usr/share/cursors/xorg-x11; ln -s ~/.icons /usr/share/cursors/xorg-x11/; exit;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
@@ -60,7 +71,7 @@ done
 while true; do
     read -p "Do you wish to disable mouse acceleration? " yn
     case $yn in
-        [Yy]* ) echo 'Section "InputClass"Identifier "My Mouse"Driver "libinput"MatchIsPointer "yes"Option "AccelProfile" "flat"EndSection' > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf;;
+        [Yy]* ) su; echo 'Section "InputClass"Identifier "My Mouse"Driver "libinput"MatchIsPointer "yes"Option "AccelProfile" "flat"EndSection' > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf; exit;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
