@@ -16,7 +16,7 @@ yay -S xorg xterm awesome-git picom-git sddm feh
 systemctl enable sddm
 
 # optional
-yay -S firefox kitty lxappearance git thunderbird nemo gedit
+yay -S firefox kitty lxappearance git thunderbird nemo gedit pavucontrol
 
 cd $SCRIPTPATH
 
