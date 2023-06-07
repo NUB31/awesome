@@ -2,7 +2,7 @@
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-if [ "$EUID" -eq 0 ]
+if [ "$USER" == "root" ]
   then echo "Do not run this script as sudo (sh start.sh)"
   exit
 fi
