@@ -16,16 +16,10 @@ do
   fi; 
 done
 
-if ! command -v git &> /dev/null
-then
-  echo "git is not installed. Starting git installation"
-  pacman -S --noconfirm git
-fi
-
 if ! command -v yay &> /dev/null
 then
   echo "yay is not installed. Starting yay installation"
-  pacman -S git
+  pacman --noconfirm -S git
   cd /opt
   git clone https://aur.archlinux.org/yay-git.git
   chown -R $USER ./yay-git
