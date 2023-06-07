@@ -61,10 +61,11 @@ cp -r .config ~/
 while true; do
     read -p "Do you wish to use the provided cursor (Bibata-Modern-Ice)? " yn
     case $yn in
-        [Yy]* ) cp -r .icons ~/; sudo mkdir /usr/share/cursors; sudo mkdir /usr/share/cursors/xorg-x11; sudo ln -s ~/.icons /usr/share/cursors/xorg-x11/;;
+        [Yy]* ) cp -r .icons ~/; sudo mkdir /usr/share/cursors; sudo mkdir /usr/share/cursors/xorg-x11; sudo ln -s ~/.icons /usr/share/cursors/xorg-x11/; break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
+
 done
 
 # Mouse acceleration
