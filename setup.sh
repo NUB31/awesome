@@ -33,7 +33,7 @@ yay -Syu --noconfirm
 echo "Installing xorg, awesome"
 # System critical
 yay -S --noconfirm xorg xterm awesome-git sddm 
-systemctl enable sddm
+sudo systemctl enable sddm
 
 # Config defined applications
 if [ $REPLY == 2 ]
