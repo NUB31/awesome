@@ -10,7 +10,7 @@ then
   sudo git clone https://aur.archlinux.org/yay-git.git
   sudo chown -R $USER ./yay-git
   cd yay-git
-  makepkg --asroot -si
+  makepkg -si
 fi
 
 sudo sh "$SCRIPTPATH/setup.sh"
