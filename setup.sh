@@ -77,8 +77,12 @@ while true; do
     esac
 done
 
-echo "Settings kitty as default terminal for nemo file browser"
-gsettings set org.cinnamon.desktop.default-applications.terminal exec kitty
+# Config defined applications
+if [ $REPLY == 2 ]
+then
+  echo "Settings kitty as default terminal for nemo file browser"
+  gsettings set org.cinnamon.desktop.default-applications.terminal exec kitty
+fi
 
 # Final command if neofetch is installed
 if [ $REPLY == 3 ]
