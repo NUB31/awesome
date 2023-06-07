@@ -2,6 +2,11 @@
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
+if [ "$EUID" -eq 0 ]
+  then echo "Do not run this script as sudo (sh start.sh)"
+  exit
+fi
+
 if ! command -v yay &> /dev/null
 then
   echo "yay is not installed. Starting yay installation"
