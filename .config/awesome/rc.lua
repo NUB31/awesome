@@ -199,7 +199,7 @@ awful.keyboard.append_global_keybindings({
         function() awful.client.focus.byidx(1) end,
         { description = "cycle forwards through windows", group = "client" }),
     awful.key({ altkey, "Shift" }, "Tab",
-        function() awful.client.focus.byidx(1) end,
+        function() awful.client.focus.byidx(-1) end,
         { description = "cycle forwards through windows", group = "client" }),
 
     -- Standard program
