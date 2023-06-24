@@ -28,7 +28,7 @@ echo "Copying wallpaper"
 cp -r .wallpapers ~/
 
 echo "Installing dependencies"
-yay -S --noconfirm xorg xterm awesome-git sddm feh picom-git rofi firefox kitty visual-studio-code-bin Adwaita-dark Adwaita nemo neovim cantarell-fonts otf-cascadia-code
+yay -S --noconfirm xorg xterm awesome-git sddm feh picom-git rofi firefox alacritty visual-studio-code-bin Adwaita-dark Adwaita nemo neovim cantarell-fonts otf-cascadia-code
 
 cd $SCRIPTPATH
 
