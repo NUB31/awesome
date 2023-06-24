@@ -41,7 +41,11 @@ then
   echo "Copying wallpaper"
   cp -r .wallpapers ~/
   echo "Installing config specific programs"
-  yay -S --noconfirm feh picom-git rofi firefox kitty visual-studio-code-bin Adwaita-dark Adwaita nemo cantarell-fonts otf-cascadia-code
+  yay -S --noconfirm feh picom-git rofi firefox kitty visual-studio-code-bin Adwaita-dark Adwaita nemo neovim cantarell-fonts otf-cascadia-code
+  echo Installing oh-my-bash
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+  echo applying .bashrc
+  cp .bashrc ~/
 fi
 
 # Personal prefrence
