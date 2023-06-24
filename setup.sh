@@ -41,7 +41,7 @@ then
   echo "Copying wallpaper"
   cp -r .wallpapers ~/
   echo "Installing config specific programs"
-  yay -S --noconfirm feh picom-git rofi firefox kitty visual-studio-code-bin Adwaita-dark Adwaita nemo
+  yay -S --noconfirm feh picom-git rofi firefox kitty visual-studio-code-bin Adwaita-dark Adwaita nemo cantarell-fonts otf-cascadia-code
 fi
 
 # Personal prefrence
@@ -78,7 +78,17 @@ done
 while true; do
     read -p "Do you wish to disable mouse acceleration? " yn
     case $yn in
-        [Yy]* ) sudo bash -c "echo 'Section \"InputClass\"Identifier \"My Mouse\"Driver \"libinput\"MatchIsPointer \"yes\"Option \"AccelProfile\" \"flat\"EndSection' > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf"; break;;
+        [Yy]* ) sudo bash -c "echo 'Section \"InputClass\" Identifier \"My Mouse\" Driver \"libinput\" MatchIsPointer \"yes\" Option \"AccelProfile\" \"flat\" EndSection' > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf"; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+# Mouse acceleration
+while true; do
+    read -p "Do you wish to set Cantarell as your default font? " yn
+    case $yn in
+        [Yy]* ) sudo bash -c "echo 'Section \"Files\" FontPath \"/usr/share/fonts/cantarell/\" EndSection' > /etc/X11/xorg.conf.d/10-fonts.conf"; break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
