@@ -19,7 +19,7 @@ then
 fi
 
 PS3="Please select the configuration you want: "
-select character in "(NOT RECCOMENDED) Minimal - Only contains awesome and xorg" "(RECCOMENDED) Default - In cludes all applications needed for a complete awesome config. Additional packages include rofi, picom, firefox, kitty, nemo etc." "Full - Includes some additional packages i use on my system, such as steam, wine, lutris, thunderbird etc. None of these packages are required for a working awesome configuration"; 
+select character in "(NOT RECCOMENDED) Minimal - Only contains awesome and xorg" "(RECCOMENDED) Default - In cludes all applications needed for a complete awesome config. Additional packages include rofi, picom, firefox, alacritty, nemo etc." "Full - Includes some additional packages i use on my system, such as steam, wine, lutris, thunderbird etc. None of these packages are required for a working awesome configuration"; 
 do   
   if [ ! -z "$character" ] ;     
   then        
