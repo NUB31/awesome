@@ -11,61 +11,30 @@ if ! command -v yay &> /dev/null
 then
   echo "yay is not installed. Starting yay installation"
   sudo pacman --noconfirm -S git
+
   cd /opt
+
   sudo git clone https://aur.archlinux.org/yay-git.git
   sudo chown -R $USER ./yay-git
+
   cd yay-git
   makepkg -si
 fi
 
-PS3="Please select the configuration you want: "
-select character in "(NOT RECCOMENDED) Minimal - Only contains awesome and xorg" "(RECCOMENDED) Default - In cludes all applications needed for a complete awesome config. Additional packages include rofi, picom, firefox, alacritty, nemo etc." "Full - Includes some additional packages i use on my system, such as steam, wine, lutris, thunderbird etc. None of these packages are required for a working awesome configuration"; 
-do   
-  if [ ! -z "$character" ] ;     
-  then        
-    break
-  fi; 
-done
-
 echo "Updating installed packages"
 yay -Syu --noconfirm
 
-echo "Installing xorg, awesome"
-# System critical
-yay -S --noconfirm xorg xterm awesome-git sddm 
-sudo systemctl enable sddm
+echo "Copying wallpaper"
+cp -r .wallpapers ~/
 
-# Config defined applications
-if [ $REPLY == 2 ]
-then
-  echo "Copying wallpaper"
-  cp -r .wallpapers ~/
-  echo "Installing config specific programs"
-  yay -S --noconfirm feh picom-git rofi firefox kitty visual-studio-code-bin Adwaita-dark Adwaita nemo neovim cantarell-fonts otf-cascadia-code
-  echo Installing oh-my-bash
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
-  echo applying .bashrc
-  cp .bashrc ~/
-fi
-
-# Personal prefrence
-if [ $REPLY == 3 ]
-then
-  echo "Installing personal programs"
-  yay -S --noconfirm lxappearance thunderbird pavucontrol steam wine lutris minecraft-launcher rider yuzu openvpn neofetch
-fi
+echo "Installing dependencies"
+yay -S --noconfirm xorg xterm awesome-git sddm feh picom-git rofi firefox kitty visual-studio-code-bin Adwaita-dark Adwaita nemo neovim cantarell-fonts otf-cascadia-code
 
 cd $SCRIPTPATH
 
 # Apply awesomewm config
 echo "Applying awesomewm configuration"
 cp -r .config ~/
-
-# Install user terminal
-if [ $REPLY == 1 ]
-then
-  sed -i "s/terminal = \"kitty\"/terminal = \"xterm\"/g" ~/.config/awesome/rc.lua
-fi
 
 # Custom cursor
 while true; do
@@ -88,7 +57,7 @@ while true; do
     esac
 done
 
-# Mouse acceleration
+# Cantarell font
 while true; do
     read -p "Do you wish to set Cantarell as your default font? " yn
     case $yn in
@@ -99,14 +68,12 @@ while true; do
 done
 
 # Config defined applications
-if [ $REPLY == 2 ]
-then
-  echo "Setting kitty as default terminal for nemo file browser"
-  gsettings set org.cinnamon.desktop.default-applications.terminal exec kitty
-fi
+echo "Setting alacritty as default terminal for nemo file browser"
+gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 
-# Final command if neofetch is installed
-if [ $REPLY == 3 ]
-then
-  neofetch
-fi
+echo Installing oh-my-bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+
+echo applying .bashrc
+cp .bashrc ~/
+source ~/.bashrc
