@@ -10,8 +10,6 @@ screen.connect_signal('request::desktop_decoration', function(s)
    awful.wibar {
       bg = color.dark,
       fg = color.light,
-      visible = true,
-      ontop = true,
       height = 35,
       screen = s,
       position = 'top',
