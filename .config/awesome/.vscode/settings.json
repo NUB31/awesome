@@ -1,0 +1,19 @@
+{
+  "Lua.diagnostics.globals": [
+    "terminal",
+    "awesome",
+    "tag",
+    "screen",
+    "client",
+    "script_path",
+    "layoutbox",
+    "createLayoutBox",
+    "createWorkspaceBox",
+    "createApplicationBox",
+    "createTray",
+    "log",
+    "color",
+    "font"
+  ],
+  "Lua.diagnostics.disable": ["different-requires"]
+}

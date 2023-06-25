@@ -17,14 +17,20 @@ client.connect_signal('request::default_keybindings', function()
          key         = 'q',
          description = 'quit application',
          group       = 'layout',
-         on_press    = function(c) c:kill() end,
+         on_press    = function(c)
+            c:kill()
+            awful.client.focus.byidx(1)
+         end,
       },
       awful.key {
          modifiers   = { mod.alt },
          key         = 'F4',
          description = 'quit application',
          group       = 'layout',
-         on_press    = function(c) c:kill() end,
+         on_press    = function(c)
+            c:kill()
+            awful.client.focus.byidx(1)
+         end,
       },
       awful.key {
          modifiers   = { mod.super },
