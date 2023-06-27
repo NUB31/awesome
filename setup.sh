@@ -3,7 +3,7 @@ SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 if [ "$USER" == "root" ]
-then echo "Do not run this script as sudo (sh setup-debian.sh)"
+then echo "Do not run this script as sudo (sh setup.sh)"
     exit
 fi
 
