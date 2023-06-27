@@ -13,7 +13,12 @@
     "createTray",
     "log",
     "color",
-    "font"
+    "font",
+    "create_layoutbox",
+    "create_taglist",
+    "create_tasklist",
+    "create_seperator",
+    "create_clock"
   ],
   "Lua.diagnostics.disable": ["different-requires"]
 }

@@ -24,23 +24,24 @@ screen.connect_signal('request::desktop_decoration', function(s)
             -- left widgets
             {
                layout = wibox.layout.fixed.horizontal,
-               widget = wibox.container.margin,
+
                widgets.create_taglist(s),
+               widgets.create_seperator(8, 8, "|"),
             },
             { -- Middle widget
                layout = wibox.layout.fixed.horizontal,
-               {
-                  widget = wibox.container.margin,
-                  left = 10,
-                  right = 10,
-                  widgets.create_tasklist(s),
-               }
+
+               widgets.create_tasklist(s),
             },
             -- right widgets
             {
                layout = wibox.layout.fixed.horizontal,
-               wibox.widget.systray(),
-               wibox.widget.textclock(),
+
+               widgets.create_seperator(4, 4, ""),
+               widgets.create_systray(),
+               widgets.create_seperator(8, 8, "|"),
+               widgets.create_clock(),
+               widgets.create_seperator(8, 8, "|"),
                widgets.create_layoutbox(s),
             }
          }

@@ -25,6 +25,7 @@ function create_taglist(s)
             {
                 layout = wibox.layout.fixed.horizontal,
                 {
+
                     id     = 'circle_tag',
                     widget = wibox.container.background,
                     bg     = color.darker,
