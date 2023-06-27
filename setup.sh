@@ -17,7 +17,14 @@ case $1 in
         sudo apt upgrade -y
         
         echo "Installing dependencies"
-        sudo apt install -y xorg xterm lightdm feh picom rofi firefox-esr alacritty nemo neovim fonts-cantarell unzip wget git make libxcb-xfixes0-dev curl colorpicker xsel imagemagick
+        sudo apt install -y xorg xterm lightdm feh picom rofi firefox-esr alacritty nemo neovim fonts-cantarell unzip wget git make libxcb-xfixes0-dev curl xsel imagemagick build-essential libexif-gtk-dev
+        
+        git clone https://github.com/Jack12816/colorpicker
+        cd colorpicker
+        make
+        sudo mv colorpicker /bin
+        cd "$SCRIPTPATH"
+        sudo rm -r colorpicker
         
         sudo apt build-dep awesome
         git clone https://github.com/awesomewm/awesome
@@ -25,7 +32,6 @@ case $1 in
         make package
         cd build
         sudo apt install ./*.deb
-        
         cd "$SCRIPTPATH"
         sudo rm -r awesome
         
