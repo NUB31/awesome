@@ -106,6 +106,24 @@ awful.keyboard.append_global_keybindings {
       group       = 'layout',
       on_press    = function() awful.spawn(apps.code) end,
    },
+   awful.key {
+      modifiers   = { mod.super, mod.shift },
+      key         = 's',
+      description = 'screenshot',
+      group       = 'layout',
+      on_press    = function()
+         awful.util.spawn_with_shell(apps.screenshot(os.time(os.date("!*t"))))
+      end,
+   },
+   awful.key {
+      modifiers   = { mod.super, mod.shift },
+      key         = 'c',
+      description = 'screenshot',
+      group       = 'layout',
+      on_press    = function()
+         awful.util.spawn_with_shell(apps.color_picker)
+      end,
+   },
 }
 
 awful.keyboard.append_global_keybindings {

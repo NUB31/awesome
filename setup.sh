@@ -17,7 +17,7 @@ case $1 in
         sudo apt upgrade -y
         
         echo "Installing dependencies"
-        sudo apt install -y xorg xterm lightdm feh picom rofi firefox-esr alacritty nemo neovim fonts-cantarell unzip wget git make libxcb-xfixes0-dev curl sourcesourc
+        sudo apt install -y xorg xterm lightdm feh picom rofi firefox-esr alacritty nemo neovim fonts-cantarell unzip wget git make libxcb-xfixes0-dev curl colorpicker xsel imagemagick
         
         sudo apt build-dep awesome
         git clone https://github.com/awesomewm/awesome
@@ -54,7 +54,7 @@ Exec=awesome
             yay -Syu --noconfirm
             
             echo "Installing dependencies"
-            yay -S --noconfirm xorg xterm awesome-git sddm feh picom-git rofi firefox alacritty Adwaita-dark Adwaita nemo neovim cantarell-fonts
+            yay -S --noconfirm xorg xterm awesome-git sddm feh picom-git rofi firefox alacritty Adwaita-dark Adwaita nemo neovim cantarell-fonts colorpicker xsel imagemagick
         fi
     ;;
     
