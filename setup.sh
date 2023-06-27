@@ -17,7 +17,7 @@ case $1 in
         sudo apt upgrade -y
         
         echo "Installing dependencies"
-        sudo apt install -y xorg xterm lightdm feh picom rofi firefox-esr alacritty nemo neovim fonts-cantarell unzip wget git
+        sudo apt install -y xorg xterm lightdm feh picom rofi firefox-esr alacritty nemo neovim fonts-cantarell unzip wget git make libxcb-xfixes0-dev curl sourcesourc
         
         sudo apt build-dep awesome
         git clone https://github.com/awesomewm/awesome
@@ -27,7 +27,7 @@ case $1 in
         sudo apt install ./*.deb
         
         cd "$SCRIPTPATH"
-        rm -r awesome
+        sudo rm -r awesome
         
         sudo mkdir /usr/share/xsessions
         sudo bash -c 'echo "[Desktop Entry]
@@ -120,4 +120,4 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/mast
 
 echo applying .bashrc
 cp dotfiles/.bashrc ~/
-source ~/.bashrc
+bash -c 'source ~/.bashrc'
