@@ -1,50 +1,94 @@
-#!bin/sh
+#!bin/bash
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 if [ "$USER" == "root" ]
-  then echo "Do not run this script as sudo (sh start.sh)"
-  exit
+then echo "Do not run this script as sudo (sh setup-debian.sh)"
+    exit
 fi
 
-if ! command -v yay &> /dev/null
-then
-  echo "yay is not installed. Starting yay installation"
-  sudo pacman --noconfirm -S git
+cd "$SCRIPTPATH"
 
-  cd /opt
+case $1 in
+    
+    "debian")
+        echo "Updating installed packages"
+        sudo apt update -y
+        sudo apt upgrade -y
+        
+        echo "Installing dependencies"
+        sudo apt install -y xorg xterm lightdm feh picom rofi firefox-esr alacritty nemo neovim fonts-cantarell unzip wget git
+        
+        sudo apt build-dep awesome
+        git clone https://github.com/awesomewm/awesome
+        cd awesome
+        make package
+        cd build
+        sudo apt install ./*.deb
+        
+        cd "$SCRIPTPATH"
+        rm -r awesome
+        
+        sudo mkdir /usr/share/xsessions
+        sudo bash -c 'echo "[Desktop Entry]
+Name=awesome
+Exec=awesome
+        " >  /usr/share/xsessions/awesome.desktop'
+    ;;
+    
+    "arch")
+        if ! command -v yay &> /dev/null
+        then
+            echo "yay is not installed. Starting yay installation"
+            sudo pacman --noconfirm -S git
+            
+            cd /opt
+            
+            sudo git clone https://aur.archlinux.org/yay-git.git
+            sudo chown -R $USER ./yay-git
+            
+            cd yay-git
+            makepkg -si
+            
+            echo "Updating installed packages"
+            yay -Syu --noconfirm
+            
+            echo "Installing dependencies"
+            yay -S --noconfirm xorg xterm awesome-git sddm feh picom-git rofi firefox alacritty Adwaita-dark Adwaita nemo neovim cantarell-fonts
+        fi
+    ;;
+    
+    *)
+        echo "Not a supported distro. Please use debian or arch"
+        exit  1
+    ;;
+esac
 
-  sudo git clone https://aur.archlinux.org/yay-git.git
-  sudo chown -R $USER ./yay-git
 
-  cd yay-git
-  makepkg -si
-fi
+cd "$SCRIPTPATH"
 
-echo "Updating installed packages"
-yay -Syu --noconfirm
+echo "Installing Cascadia Code font"
+wget "https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip"
+unzip CascadiaCode-2111.01.zip -d "Cascadia Code"
+sudo mv "Cascadia Code" /usr/share/fonts/
+rm CascadiaCode-2111.01.zip
 
 echo "Copying wallpaper"
-cp -r .wallpapers ~/
+cp -r dotfiles/.wallpapers ~/
 
-echo "Installing dependencies"
-yay -S --noconfirm xorg xterm awesome-git sddm feh picom-git rofi firefox alacritty visual-studio-code-bin Adwaita-dark Adwaita nemo neovim cantarell-fonts otf-cascadia-code
-
-cd $SCRIPTPATH
-
-# Apply awesomewm config
 echo "Applying awesomewm configuration"
-cp -r .config ~/
+cp -r dotfiles/.config ~/
+
 
 # Custom cursor
 while true; do
     read -p "Do you wish to use the provided cursor (Bibata-Modern-Ice)? " yn
     case $yn in
-        [Yy]* ) cp -r .icons ~/; sudo mkdir /usr/share/cursors; sudo mkdir /usr/share/cursors/xorg-x11; sudo ln -s ~/.icons /usr/share/cursors/xorg-x11/; break;;
+        [Yy]* ) cp -r dotfiles/.icons ~/; sudo mkdir /usr/share/cursors; sudo mkdir /usr/share/cursors/xorg-x11; sudo ln -s ~/.icons /usr/share/cursors/xorg-x11/; break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
-
+    
 done
 
 # Mouse acceleration
@@ -75,5 +119,5 @@ echo Installing oh-my-bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 
 echo applying .bashrc
-cp .bashrc ~/
+cp dotfiles/.bashrc ~/
 source ~/.bashrc
