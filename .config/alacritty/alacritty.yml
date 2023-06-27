@@ -30,7 +30,7 @@ colors:
     background: "#131520"
 
 window:
-  # opacity: .95
+  opacity: .95
 
   dynamic_padding: false
   padding:
