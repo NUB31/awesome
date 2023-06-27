@@ -13,6 +13,7 @@ _M.editor_cmd = _M.terminal .. ' -e ' .. _M.editor
 _M.manual_cmd = _M.terminal .. ' -e man awesome'
 
 _M.screenshot = function(name)
+   os.execute("mkdir -p " .. "~/Screenshots")
    return "import ~/Screenshots/" .. name .. ".png"
 end
 
