@@ -26,7 +26,7 @@ case $1 in
         cd "$SCRIPTPATH"
         sudo rm -r colorpicker
         
-        sudo apt build-dep awesome
+        sudo apt build-dep -y awesome
         git clone https://github.com/awesomewm/awesome
         cd awesome
         make package
