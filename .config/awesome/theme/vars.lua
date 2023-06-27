@@ -1,9 +1,9 @@
 color = {
-    light = "#FFFFFF",
-    darkest = "#1B1B1B",
-    darker = "#2B2B2B",
-    dark = "#3B3B3B",
-    accent = "#DC143C"
+    light = "#ffffff",
+    darkest = "#131520",
+    darker = "#1d202f",
+    dark = "#24283b",
+    accent = "#7aa2f7"
 }
 
 font  = {
