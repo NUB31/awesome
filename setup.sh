@@ -1,129 +1,189 @@
 #!bin/bash
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
+LOGFILE="$SCRIPTPATH/log.txt"
+
+function print_select_menu() {
+    local function_arguments=($@)
+    
+    local selected_item="$1"
+    local menu_items=(${function_arguments[@]:1})
+    local menu_size="${#menu_items[@]}"
+    
+    for (( i = 0; i < $menu_size; ++i ))
+    do
+        if [ "$i" = "$selected_item" ]
+        then
+            echo "-> ${menu_items[i]}"
+        else
+            echo "   ${menu_items[i]}"
+        fi
+    done
+}
+
+function create_select_menu() {
+    local prompt="$1"
+
+    local menu_items_arg="$2"
+    IFS=';' read -ra menu_items <<< "$menu_items_arg"
+
+    local menu_size="${#menu_items[@]}"
+    local menu_limit=$((menu_size - 1))
+    
+    local selected_item="$3"
+    
+    clear
+    echo "$prompt"
+    print_select_menu "$selected_item" "${menu_items[@]}"
+    
+    while read -rsn1 input
+    do
+        case "$input"
+            in
+            $'\x1B')  # ESC ASCII code (https://dirask.com/posts/ASCII-Table-pJ3Y0j)
+                read -rsn1 -t 0.1 input
+                if [ "$input" = "[" ]  # occurs before arrow code
+                then
+                    read -rsn1 -t 0.1 input
+                    case "$input"
+                        in
+                        A)  # Up Arrow
+                            if [ "$selected_item" -ge 1 ]
+                            then
+                                selected_item=$((selected_item - 1))
+                                clear
+                                echo "$prompt"
+                                print_select_menu "$selected_item" "${menu_items[@]}"
+                            fi
+                        ;;
+                        B)  # Down Arrow
+                            if [ "$selected_item" -lt "$menu_limit" ]
+                            then
+                                selected_item=$((selected_item + 1))
+                                clear
+                                echo "$prompt"
+                                print_select_menu "$selected_item" "${menu_items[@]}"
+                            fi
+                        ;;
+                    esac
+                fi
+                read -rsn5 -t 0.1  # flushing stdin
+            ;;
+            "")  # Enter key
+                return "$selected_item"
+            ;;
+        esac
+    done
+}
+
+function arch_update_packages {
+    sudo pacman -Syu --noconfirm
+}
+
+function arch_install_display_server() {
+    sudo pacman -S --noconfirm xorg
+}
+
+function arch_install_lightdm() {
+    sudo pacman -S --noconfirm lightdm lightdm-gtk-greeter
+    sudo systemctl enable lightdm
+}
+
+function arch_install_sddm() {
+    sudo pacman -S --noconfirm sddm
+    sudo systemctl enable sddm
+}
+
+function arch_install_awesome() {
+    sudo pacman -S --noconfirm feh picom rofi firefox alacritty nemo neovim cantarell-fonts imagemagick
+    
+    cd "$SCRIPTPATH"
+    sudo pacman -S --noconfirm --needed base-devel git
+    git clone https://aur.archlinux.org/awesome-git.git
+    cd awesome-git
+    makepkg -fsri --noconfirm
+}
+
+function install_cascadia_code() {
+    cd "$SCRIPTPATH"
+    
+    wget "https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip"
+    unzip CascadiaCode-2111.01.zip -d "Cascadia Code"
+    
+    sudo mv "Cascadia Code" /usr/share/fonts/
+    rm CascadiaCode-2111.01.zip
+}
+
+function copy_dotfiles() {
+    cd "$SCRIPTPATH"
+    
+    cp -r dotfiles/.wallpapers ~/
+    cp -r dotfiles/.config ~/
+}
+
+function install_cursor() {
+    cp -r dotfiles/.icons ~/
+    sudo mkdir -p /usr/share/cursors/xorg-x11
+    sudo ln -s ~/.icons /usr/share/cursors/xorg-x11/
+}
+
+function disable_mouse_acceleration() {
+    sudo bash -c "echo 'Section \"InputClass\" Identifier \"My Mouse\" Driver \"libinput\" MatchIsPointer \"yes\" Option \"AccelProfile\" \"flat\" EndSection' > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf"
+}
+
+function apply_system_font() {
+    sudo bash -c "echo 'Section \"Files\" FontPath \"/usr/share/fonts/cantarell/\" EndSection' > /etc/X11/xorg.conf.d/10-fonts.conf"
+}
+
+function set_cinnamon_default_terminal() {
+    gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+}
+
+function install_oh_my_bash() {
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+    cp dotfiles/.bashrc ~/
+    bash -c 'source ~/.bashrc'
+}
 
 if [ "$USER" == "root" ]
-then echo "Do not run this script as sudo (sh setup.sh)"
+then
+    echo "You are currently running as root. Please run this script as a normal user"
     exit
 fi
 
-cd "$SCRIPTPATH"
+function main() {
+    rm "$LOGFILE" 2> /dev/null
 
-case $1 in
-    
-    "debian")
-        echo "Updating installed packages"
-        sudo apt update -y
-        sudo apt upgrade -y
-        
-        echo "Installing dependencies"
-        sudo apt install -y xorg xterm lightdm feh picom rofi firefox-esr alacritty nemo neovim fonts-cantarell unzip wget git make libxcb-xfixes0-dev curl xsel imagemagick build-essential libexif-gtk-dev
-        
-        git clone https://github.com/Jack12816/colorpicker
-        cd colorpicker
-        make
-        sudo mv colorpicker /bin
-        cd "$SCRIPTPATH"
-        sudo rm -r colorpicker
-        
-        sudo apt build-dep -y awesome
-        git clone https://github.com/awesomewm/awesome
-        cd awesome
-        make package
-        cd build
-        sudo apt install ./*.deb
-        cd "$SCRIPTPATH"
-        sudo rm -r awesome
-        
-        sudo mkdir /usr/share/xsessions
-        sudo bash -c 'echo "[Desktop Entry]
-Name=awesome
-Exec=awesome
-        " >  /usr/share/xsessions/awesome.desktop'
-    ;;
-    
-    "arch")
-        if ! command -v yay &> /dev/null
-        then
-            echo "yay is not installed. Starting yay installation"
-            sudo pacman --noconfirm -S git
-            
-            cd /opt
-            
-            sudo git clone https://aur.archlinux.org/yay-git.git
-            sudo chown -R $USER ./yay-git
-            
-            cd yay-git
-            makepkg -si
-            
-            echo "Updating installed packages"
-            yay -Syu --noconfirm
-            
-            echo "Installing dependencies"
-            yay -S --noconfirm xorg xterm awesome-git sddm feh picom-git rofi firefox alacritty Adwaita-dark Adwaita nemo neovim cantarell-fonts colorpicker xsel imagemagick
-        fi
-    ;;
-    
-    *)
-        echo "Not a supported distro. Please use debian or arch"
-        exit  1
-    ;;
-esac
+    arch_update_packages >> "$LOGFILE"
+    arch_install_display_server >> "$LOGFILE"
 
-
-cd "$SCRIPTPATH"
-
-echo "Installing Cascadia Code font"
-wget "https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip"
-unzip CascadiaCode-2111.01.zip -d "Cascadia Code"
-sudo mv "Cascadia Code" /usr/share/fonts/
-rm CascadiaCode-2111.01.zip
-
-echo "Copying wallpaper"
-cp -r dotfiles/.wallpapers ~/
-
-echo "Applying awesomewm configuration"
-cp -r dotfiles/.config ~/
-
-
-# Custom cursor
-while true; do
-    read -p "Do you wish to use the provided cursor (Bibata-Modern-Ice)? " yn
-    case $yn in
-        [Yy]* ) cp -r dotfiles/.icons ~/; sudo mkdir /usr/share/cursors; sudo mkdir /usr/share/cursors/xorg-x11; sudo ln -s ~/.icons /usr/share/cursors/xorg-x11/; break;;
-        [Nn]* ) break;;
-        * ) echo "Please answer yes or no.";;
+    create_select_menu "What display manager do you want to use?" "LightDM;SDDM" 0
+    case "$?" in
+        0) arch_install_lightdm >> "$LOGFILE";;
+        1) arch_install_sddm >> "$LOGFILE";;
     esac
-    
-done
 
-# Mouse acceleration
-while true; do
-    read -p "Do you wish to disable mouse acceleration? " yn
-    case $yn in
-        [Yy]* ) sudo bash -c "echo 'Section \"InputClass\" Identifier \"My Mouse\" Driver \"libinput\" MatchIsPointer \"yes\" Option \"AccelProfile\" \"flat\" EndSection' > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf"; break;;
-        [Nn]* ) break;;
-        * ) echo "Please answer yes or no.";;
+    arch_install_awesome >> "$LOGFILE"
+    install_cascadia_code >> "$LOGFILE"
+    copy_dotfiles >> "$LOGFILE"
+
+    create_select_menu "Do you wish to use the provided cursor (Bibata-Modern-Ice)?" "Yes;No" 0
+    case "$?" in
+        0) install_cursor >> "$LOGFILE";;
     esac
-done
 
-# Cantarell font
-while true; do
-    read -p "Do you wish to set Cantarell as your default font? " yn
-    case $yn in
-        [Yy]* ) sudo bash -c "echo 'Section \"Files\" FontPath \"/usr/share/fonts/cantarell/\" EndSection' > /etc/X11/xorg.conf.d/10-fonts.conf"; break;;
-        [Nn]* ) break;;
-        * ) echo "Please answer yes or no.";;
+    create_select_menu "Do you wish to disable mouse acceleration?" "Yes;No" 0
+    case "$?" in
+        0) install_cursor >> "$LOGFILE";;
     esac
-done
 
-# Config defined applications
-echo "Setting alacritty as default terminal for nemo file browser"
-gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+    disable_mouse_acceleration >> "$LOGFILE"
+    apply_system_font >> "$LOGFILE"
+    set_cinnamon_default_terminal >> "$LOGFILE"
 
-echo Installing oh-my-bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
-
-echo applying .bashrc
-cp dotfiles/.bashrc ~/
-bash -c 'source ~/.bashrc'
+    create_select_menu "Do you wish to install oh my bash?" "Yes;No" 0
+    case "$?" in
+        0) install_oh_my_bash >> "$LOGFILE";;
+    esac
+}
+main
