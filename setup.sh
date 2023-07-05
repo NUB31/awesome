@@ -104,6 +104,18 @@ function arch_install_awesome() {
     makepkg -fsri --noconfirm
 }
 
+function arch_install_yay() {
+    sudo pacman --noconfirm -S git
+
+    cd /opt
+
+    sudo git clone https://aur.archlinux.org/yay-git.git
+    sudo chown -R $USER ./yay-git
+
+    cd yay-git
+    makepkg -si
+}
+
 function install_cascadia_code() {
     cd "$SCRIPTPATH"
     
@@ -180,6 +192,11 @@ function main() {
     disable_mouse_acceleration >> "$LOGFILE"
     apply_system_font >> "$LOGFILE"
     set_cinnamon_default_terminal >> "$LOGFILE"
+
+    create_select_menu "Do you wish to install yay?" "Yes;No" 0
+    case "$?" in
+        0) install_yay >> "$LOGFILE";;
+    esac
 
     create_select_menu "Do you wish to install oh my bash?" "Yes;No" 0
     case "$?" in
