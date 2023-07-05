@@ -8,7 +8,7 @@
 
 - awesomewm config intended for the latest build as of June 27, 2023
   - On arch btw, install the `awesome-git` instead of the normal `awesome` package
-  - On debian nad its derivatives, compile the package following the instructions at the [awesome](https://github.com/awesomewm/awesome) repository
+  - On debian and its derivatives, compile the package following the instructions at the [awesome](https://github.com/awesomewm/awesome) repository
 - alacritty config
 - picom config
 - Bibata-Modern-Ice cursor theme
