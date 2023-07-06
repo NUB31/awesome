@@ -95,13 +95,16 @@ function arch_install_sddm() {
 }
 
 function arch_install_awesome() {
-    sudo pacman -S --noconfirm feh picom rofi firefox alacritty nemo neovim cantarell-fonts imagemagick
+    sudo pacman -S --noconfirm feh picom rofi firefox alacritty nemo neovim cantarell-fonts otf-cascadia-code imagemagick
     
     cd "$SCRIPTPATH"
     sudo pacman -S --noconfirm --needed base-devel git
     git clone https://aur.archlinux.org/awesome-git.git
     cd awesome-git
     makepkg -fsri --noconfirm
+    
+    cd "$SCRIPTPATH"
+    sudo rm -r awesome-git
 }
 
 function arch_install_yay() {
@@ -114,16 +117,6 @@ function arch_install_yay() {
 
     cd yay-git
     makepkg -si
-}
-
-function install_cascadia_code() {
-    cd "$SCRIPTPATH"
-    
-    wget "https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip"
-    unzip CascadiaCode-2111.01.zip -d "Cascadia Code"
-    
-    sudo mv "Cascadia Code" /usr/share/fonts/
-    rm CascadiaCode-2111.01.zip
 }
 
 function copy_dotfiles() {
@@ -157,14 +150,15 @@ function install_oh_my_bash() {
     bash -c 'source ~/.bashrc'
 }
 
-if [ "$USER" == "root" ]
-then
-    echo "You are currently running as root. Please run this script as a normal user"
-    exit
-fi
 
 function main() {
     rm "$LOGFILE" 2> /dev/null
+    
+    if [ "$USER" == "root" ]
+    then
+        echo "You are currently running as root. Please run this script as a normal user"
+        exit
+    fi
 
     arch_update_packages >> "$LOGFILE"
     arch_install_display_server >> "$LOGFILE"
