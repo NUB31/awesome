@@ -95,7 +95,7 @@ function arch_install_sddm() {
 }
 
 function arch_install_awesome() {
-    sudo pacman -S --noconfirm feh picom rofi firefox alacritty nemo neovim cantarell-fonts otf-cascadia-code imagemagick xsel
+    sudo pacman -S --noconfirm feh picom rofi firefox alacritty nemo neovim cantarell-fonts otf-cascadia-code imagemagick gpick
     
     cd "$SCRIPTPATH"
     sudo pacman -S --noconfirm --needed base-devel git
