@@ -1,0 +1,22 @@
+{
+  "workbench.iconTheme": "bearded-icons",
+  "workbench.colorTheme": "Bearded Theme Vivid Black",
+  "editor.fontSize": 16,
+  "editor.fontFamily": "'Cascadia Code', 'Droid Sans Mono', 'monospace', monospace",
+  "editor.insertSpaces": false,
+  "editor.wordWrap": "on",
+  "editor.fontLigatures": true,
+  "editor.formatOnSave": true,
+  "diffEditor.diffAlgorithm": "advanced",
+  "diffEditor.experimental.useVersion2": true,
+  "workbench.preferredDarkColorTheme": "Bearded Theme Vivid Black",
+  "workbench.preferredHighContrastColorTheme": "Bearded Theme Vivid Light",
+  "workbench.tips.enabled": false,
+  "terminal.external.linuxExec": "alacritty",
+  "terminal.integrated.cursorStyle": "line",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.stickyScroll.enabled": true,
+  "editor.mouseWheelZoom": true
+}

@@ -10,7 +10,7 @@ local theme         = {}
 
 theme.font                     = font.sans
 
-theme.useless_gap              = dpi(5)
+#theme.useless_gap              = dpi(5)
 theme.border_width             = dpi(3)
 
 theme.border_color_normal      = color.darkest

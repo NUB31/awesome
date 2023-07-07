@@ -95,7 +95,7 @@ function arch_install_sddm() {
 }
 
 function arch_install_awesome() {
-    sudo pacman -S --noconfirm feh picom rofi firefox alacritty nemo neovim cantarell-fonts otf-cascadia-code imagemagick
+    sudo pacman -S --noconfirm feh picom rofi firefox alacritty nemo neovim cantarell-fonts otf-cascadia-code imagemagick xsel
     
     cd "$SCRIPTPATH"
     sudo pacman -S --noconfirm --needed base-devel git
@@ -105,6 +105,25 @@ function arch_install_awesome() {
     
     cd "$SCRIPTPATH"
     sudo rm -r awesome-git
+
+    mkdir -p ~/.config/
+    cp -r dotfiles/.config/awesome ~/.config
+    cp -r dotfiles/.config/alacritty ~/.config
+    cp -r "dotfiles/.config/Code OSS" ~/.config
+    cp -r dotfiles/.config/picom ~/.config
+    cp -r dotfiles/.config/vpn ~/.config
+
+    cp -r dotfiles/.icons ~/
+    sudo mkdir -p /usr/share/cursors/xorg-x11
+    sudo ln -s ~/.icons /usr/share/cursors/xorg-x11/
+    
+    cp -r dotfiles/.themes ~/
+
+    mkdir -p ~/.local/share/icons
+    cp -r dotfiles/.local/share/icons/Fluent-Dark ~/.local/share/icons
+
+    mkdir -p ~/.config
+    cp -r dotfiles/.config/gtk-3.0 ~/.config
 }
 
 function arch_install_yay() {
@@ -119,24 +138,12 @@ function arch_install_yay() {
     makepkg -si
 }
 
-function copy_dotfiles() {
-    cd "$SCRIPTPATH"
-    
-    cp -r dotfiles/.wallpapers ~/
-    cp -r dotfiles/.config ~/
-}
-
-function install_cursor() {
-    cp -r dotfiles/.icons ~/
-    sudo mkdir -p /usr/share/cursors/xorg-x11
-    sudo ln -s ~/.icons /usr/share/cursors/xorg-x11/
-}
-
 function disable_mouse_acceleration() {
     sudo bash -c "echo 'Section \"InputClass\" Identifier \"My Mouse\" Driver \"libinput\" MatchIsPointer \"yes\" Option \"AccelProfile\" \"flat\" EndSection' > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf"
 }
 
 function apply_system_font() {
+    echo 'gtk-font-name="Cantarell 11"' >> ~/.config/.gtkrc-2.0
     sudo bash -c "echo 'Section \"Files\" FontPath \"/usr/share/fonts/cantarell/\" EndSection' > /etc/X11/xorg.conf.d/10-fonts.conf"
 }
 
@@ -170,20 +177,12 @@ function main() {
     esac
 
     arch_install_awesome >> "$LOGFILE"
-    install_cascadia_code >> "$LOGFILE"
-    copy_dotfiles >> "$LOGFILE"
-
-    create_select_menu "Do you wish to use the provided cursor (Bibata-Modern-Ice)?" "Yes;No" 0
-    case "$?" in
-        0) install_cursor >> "$LOGFILE";;
-    esac
 
     create_select_menu "Do you wish to disable mouse acceleration?" "Yes;No" 0
     case "$?" in
-        0) install_cursor >> "$LOGFILE";;
+        0) disable_mouse_acceleration >> "$LOGFILE";;
     esac
 
-    disable_mouse_acceleration >> "$LOGFILE"
     apply_system_font >> "$LOGFILE"
     set_cinnamon_default_terminal >> "$LOGFILE"
 
