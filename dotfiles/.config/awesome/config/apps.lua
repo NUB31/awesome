@@ -6,7 +6,7 @@ local _M = {
    code         = "code",
    run          = "rofi options -theme Monokai -show drun",
    windows      = "rofi options -theme Monokai -show window",
-   color_picker = "colorpicker --short --one-shot | xsel -b",
+   color_picker = "gpick --pick",
 }
 
 _M.editor_cmd = _M.terminal .. ' -e ' .. _M.editor
