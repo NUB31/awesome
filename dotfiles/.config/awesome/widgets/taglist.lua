@@ -1,16 +1,17 @@
-local awful = require "awful"
-local wibox = require "wibox"
-local gears = require "gears"
-local mod   = require 'bindings.mod'
+local awful  = require 'awful'
+local wibox  = require 'wibox'
+local gears  = require 'gears'
 
-function create_taglist(s)
+local config = require 'config'
+
+function taglist(s)
     local function set_active_tag(widget, tag)
         local circle = widget:get_children_by_id('circle_tag')[1]
 
         if tag == s.selected_tag then
-            circle.bg = color.accent
+            circle.bg = config.colors.accent
         else
-            circle.bg = color.darker
+            circle.bg = config.colors.darker
         end
     end
 
@@ -22,32 +23,26 @@ function create_taglist(s)
             layout = wibox.layout.flex.horizontal
         },
         widget_template = {
+            layout = wibox.layout.fixed.horizontal,
             {
-                layout = wibox.layout.fixed.horizontal,
+                id                 = 'circle_tag',
+                widget             = wibox.container.background,
+                bg                 = config.colors.darker,
+
+                shape              = gears.shape.rounded_rect,
+                shape_border_width = 1,
+                shape_border_color = config.colors.darkest,
                 {
-
-                    id     = 'circle_tag',
-                    widget = wibox.container.background,
-                    bg     = color.darker,
-
-
-                    shape              = gears.shape.rounded_rect,
-                    shape_border_width = 1,
-                    shape_border_color = color.darkest,
+                    widget = wibox.container.margin,
+                    left = 6,
+                    right = 6,
                     {
-                        {
-                            id     = 'index_tag',
-                            widget = wibox.widget.textbox,
-                        },
-                        margins = 6,
-                        widget  = wibox.container.margin,
-                    },
+                        id     = 'index_tag',
+                        widget = wibox.widget.textbox,
+                    }
                 },
-                {
-                    widget = wibox.widget.imagebox,
-                },
+
             },
-            widget          = wibox.container.background,
 
             create_callback = function(widget, tag, index)
                 widget:get_children_by_id('index_tag')[1].markup = '<b> ' .. index .. ' </b>'
@@ -56,21 +51,20 @@ function create_taglist(s)
 
                 local circle = widget:get_children_by_id('circle_tag')[1]
                 widget:connect_signal('mouse::enter', function()
-                    circle.bg = color.darkest
+                    circle.bg = config.colors.darkest
                 end)
 
                 widget:connect_signal('mouse::leave', function()
                     if tag == s.selected_tag then
-                        circle.bg = color.accent
+                        circle.bg = config.colors.accent
                     else
-                        circle.bg = color.darker
+                        circle.bg = config.colors.darker
                     end
                 end)
             end,
 
             update_callback = set_active_tag
         },
-
         filter          = awful.widget.taglist.filter.all,
         buttons         = {
             awful.button {
@@ -79,7 +73,7 @@ function create_taglist(s)
                 on_press  = function(t) t:view_only() end,
             },
             awful.button {
-                modifiers = { mod.super },
+                modifiers = { config.keys.super },
                 button    = 1,
                 on_press  = function(t)
                     if client.focus then
@@ -92,4 +86,4 @@ function create_taglist(s)
     }
 end
 
-return create_taglist
+return taglist

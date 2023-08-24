@@ -1,13 +1,15 @@
-local awful = require "awful"
-local wibox = require "wibox"
-local gears = require "gears"
+local awful = require 'awful'
+local wibox = require 'wibox'
+local gears = require 'gears'
 
-function create_tasklist(s)
+local config = require 'config'
+
+function tasklist(s)
     local function set_active_client(widget, c)
         if c == client.focus then
-            widget:get_children_by_id('background_tag')[1].shape_border_color = color.accent
+            widget:get_children_by_id('background_tag')[1].shape_border_color = config.colors.accent
         else
-            widget:get_children_by_id('background_tag')[1].shape_border_color = color.darkest
+            widget:get_children_by_id('background_tag')[1].shape_border_color = config.colors.darkest
         end
     end
 
@@ -18,13 +20,13 @@ function create_tasklist(s)
             layout  = wibox.layout.flex.horizontal
         },
         widget_template = {
-            id = "background_tag",
+            id = 'background_tag',
 
-            bg = color.darker,
+            bg = config.colors.darker,
 
             shape = gears.shape.rounded_rect,
             shape_border_width = 1,
-            shape_border_color = color.darkest,
+            shape_border_color = config.colors.darkest,
 
             widget = wibox.container.background,
             {
@@ -58,11 +60,11 @@ function create_tasklist(s)
 
 
                 widget:connect_signal('mouse::enter', function()
-                    bg_el.bg = color.darkest
+                    bg_el.bg = config.colors.darkest
                 end)
 
                 widget:connect_signal('mouse::leave', function()
-                    bg_el.bg = color.darker
+                    bg_el.bg = config.colors.darker
                 end)
             end,
 
@@ -94,4 +96,4 @@ function create_tasklist(s)
     }
 end
 
-return create_tasklist
+return tasklist

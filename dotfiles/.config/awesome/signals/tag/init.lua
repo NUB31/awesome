@@ -1,7 +1,7 @@
 local awful = require 'awful'
 
-local vars = require 'config.vars'
+local config = require 'config'
 
 tag.connect_signal('request::default_layouts', function()
-   awful.layout.append_default_layouts(vars.layouts)
+   awful.layout.append_default_layouts(config.vars.layouts)
 end)

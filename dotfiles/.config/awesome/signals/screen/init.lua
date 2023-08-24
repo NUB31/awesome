@@ -1,22 +1,22 @@
 local awful   = require 'awful'
 local wibox   = require 'wibox'
 
-local vars    = require 'config.vars'
+local config  = require 'config'
 local widgets = require 'widgets'
 
 screen.connect_signal('request::desktop_decoration', function(s)
-   awful.tag(vars.tags, s, awful.layout.layouts[1])
+   awful.tag(config.vars.tags, s, awful.layout.layouts[1])
 
    awful.wibar {
-      bg = color.dark,
-      fg = color.light,
-      height = 35,
+      bg = config.colors.dark,
+      fg = config.colors.light,
+      height = 40,
       screen = s,
-      position = 'top',
+      position = 'bottom',
       widget = {
          layout = wibox.container.margin,
-         top = 4,
-         bottom = 4,
+         top = 8,
+         bottom = 8,
          left = 8,
          right = 8,
          {
@@ -25,24 +25,25 @@ screen.connect_signal('request::desktop_decoration', function(s)
             {
                layout = wibox.layout.fixed.horizontal,
 
-               widgets.create_taglist(s),
-               widgets.create_seperator(8, 8, "|"),
+               widgets.taglist(s),
+               widgets.seperator(8, 8, '|'),
             },
             { -- Middle widget
                layout = wibox.layout.fixed.horizontal,
 
-               widgets.create_tasklist(s),
+               widgets.tasklist(s),
             },
             -- right widgets
             {
                layout = wibox.layout.fixed.horizontal,
 
-               widgets.create_seperator(4, 4, ""),
-               widgets.create_systray(),
-               widgets.create_seperator(8, 8, "|"),
-               widgets.create_clock(),
-               widgets.create_seperator(8, 8, "|"),
-               widgets.create_layoutbox(s),
+               widgets.seperator(4, 4, ''),
+               widgets.systray(),
+               widgets.seperator(8, 8, '|'),
+               widgets.clock(),
+               widgets.seperator(8, 8, '|'),
+               widgets.layoutbox(s),
+
             }
          }
       }

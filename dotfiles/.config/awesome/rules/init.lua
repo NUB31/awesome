@@ -2,7 +2,7 @@ local awful = require 'awful'
 local ruled = require 'ruled'
 
 ruled.client.connect_signal('request::rules', function()
-   -- All clients will match this rule.
+   -- All clients
    ruled.client.append_rule {
       id         = 'global',
       rule       = {},
@@ -15,7 +15,7 @@ ruled.client.connect_signal('request::rules', function()
    }
 
    ruled.client.append_rule {
-      rule = { class = "Virt-manager" },
+      rule = { class = 'Virt-manager' },
       properties = {
          floating  = true,
          placement = awful.placement.centered,
@@ -25,7 +25,7 @@ ruled.client.connect_signal('request::rules', function()
    }
 
    ruled.client.append_rule {
-      rule = { class = "Gpick" },
+      rule = { class = 'Gpick' },
       properties = {
          floating  = true,
          placement = awful.placement.centered,
@@ -34,22 +34,13 @@ ruled.client.connect_signal('request::rules', function()
       },
    }
 
-   -- Floating clients.
    ruled.client.append_rule {
-      id = 'floating',
-      rule_any = {
-         role = {
-            'AlarmWindow',
-            'ConfigManager',
-         }
+      rule = { class = 'Pavucontrol' },
+      properties = {
+         floating  = true,
+         placement = awful.placement.bottom_right,
+         height    = 720,
+         width     = 550,
       },
-      properties = { floating = true }
-   }
-
-   -- Add titlebars to normal clients and dialogs
-   ruled.client.append_rule {
-      id         = 'titlebars',
-      rule_any   = { type = { 'normal', 'dialog' } },
-      properties = { titlebars_enabled = true },
    }
 end)

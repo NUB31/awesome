@@ -1,7 +1,9 @@
 function log(message)
     local naughty = require 'naughty'
     naughty.notification {
-        title = 'Test',
+        title = 'Log',
         message = message
     }
 end
+
+return log

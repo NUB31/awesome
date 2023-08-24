@@ -1,6 +1,6 @@
-local wibox = require "wibox"
+local wibox = require 'wibox'
 
-function create_seperator(left, right, text)
+function seperator(left, right, text)
     return wibox.widget({
         widget = wibox.container.margin,
         left = left,
@@ -11,4 +11,4 @@ function create_seperator(left, right, text)
     })
 end
 
-return create_seperator
+return seperator

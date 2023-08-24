@@ -1,9 +1,9 @@
-local awful = require("awful")
+local awful = require('awful')
 
 local cmds =
 {
-    "feh --bg-fill ~/.wallpapers/bg.jpg",
-    "picom"
+    'feh --bg-fill ~/.wallpapers/bg.jpg',
+    'picom'
 }
 
 do
