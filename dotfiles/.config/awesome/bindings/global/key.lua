@@ -25,6 +25,13 @@ awful.keyboard.append_global_keybindings {
       on_press    = awesome.restart,
    },
    awful.key {
+      modifiers   = { config.keys.super, config.keys.ctrl },
+      key         = 'l',
+      description = 'quit awesome',
+      group       = 'awesome',
+      on_press    = awesome.quit,
+   },
+   awful.key {
       modifiers   = { config.keys.super },
       key         = 'Return',
       description = 'open a terminal',
@@ -37,6 +44,13 @@ awful.keyboard.append_global_keybindings {
       description = 'run prompt',
       group       = 'launcher',
       on_press    = function() awful.spawn(config.apps.run) end,
+   },
+   awful.key {
+      modifiers   = { config.keys.super },
+      key         = 'l',
+      description = 'lock screen',
+      group       = 'awesome',
+      on_press    = function() awful.util.spawn_with_shell(config.apps.lock_screen) end,
    }
 }
 

@@ -1,7 +1,6 @@
 #!bin/bash
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
-LOGFILE="$SCRIPTPATH/log.txt"
 
 function print_select_menu() {
     local function_arguments=($@)
@@ -76,66 +75,37 @@ function create_select_menu() {
     done
 }
 
-function arch_update_packages {
-    sudo pacman -Syu --noconfirm
+function update_packages {
+    sudo apt update && sudo apt upgrade -y
 }
 
-function arch_install_display_server() {
-    sudo pacman -S --noconfirm xorg
+function install_display_server() {
+    sudo apt install -y xorg
 }
 
-function arch_install_lightdm() {
-    sudo pacman -S --noconfirm lightdm lightdm-gtk-greeter
+function install_lightdm() {
+    sudo apt install -y lightdm
     sudo systemctl enable lightdm
 }
 
-function arch_install_sddm() {
-    sudo pacman -S --noconfirm sddm
-    sudo systemctl enable sddm
-}
+function install_awesome() {
+    sudo apt install -y feh picom rofi firefox-esr alacritty nemo imagemagick gpick ffmpeg i3lock scrot pavucontrol nemo libxcb-xfixes0-dev git
+    sudo apt-get build-dep -y awesome
 
-function arch_install_awesome() {
-    sudo pacman -S --noconfirm feh picom rofi firefox alacritty nemo neovim cantarell-fonts otf-cascadia-code imagemagick gpick
-    
-    cd "$SCRIPTPATH"
-    sudo pacman -S --noconfirm --needed base-devel git
-    git clone https://aur.archlinux.org/awesome-git.git
-    cd awesome-git
-    makepkg -fsri --noconfirm
-    
-    cd "$SCRIPTPATH"
-    sudo rm -r awesome-git
+    git clone git@github.com:awesomewm/awesome
 
+    cd awesome
+    make package
+    sudo cp awesome.desktop /usr/share/xsessions/
+
+    cd "$SCRIPTPATH"
+    sudo rm -rf awesome-git
+    
     mkdir -p ~/.config/
-    cp -r dotfiles/.config/awesome ~/.config
-    cp -r dotfiles/.config/alacritty ~/.config
-    cp -r "dotfiles/.config/Code OSS" ~/.config
-    cp -r dotfiles/.config/picom ~/.config
-    cp -r dotfiles/.config/vpn ~/.config
+    cp -r dotfiles/* $HOME
 
-    cp -r dotfiles/.icons ~/
     sudo mkdir -p /usr/share/cursors/xorg-x11
     sudo ln -s ~/.icons /usr/share/cursors/xorg-x11/
-    
-    cp -r dotfiles/.themes ~/
-
-    mkdir -p ~/.local/share/icons
-    cp -r dotfiles/.local/share/icons/Fluent-Dark ~/.local/share/icons
-
-    mkdir -p ~/.config
-    cp -r dotfiles/.config/gtk-3.0 ~/.config
-}
-
-function arch_install_yay() {
-    sudo pacman --noconfirm -S git
-
-    cd /opt
-
-    sudo git clone https://aur.archlinux.org/yay-git.git
-    sudo chown -R $USER ./yay-git
-
-    cd yay-git
-    makepkg -si
 }
 
 function disable_mouse_acceleration() {
@@ -151,49 +121,31 @@ function set_cinnamon_default_terminal() {
     gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 }
 
-function install_oh_my_bash() {
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
-    cp dotfiles/.bashrc ~/
-    bash -c 'source ~/.bashrc'
+function install_starship() {
+    sudo apt install curl
+    curl -sS https://starship.rs/install.sh | sh
+    echo "eval "$(starship init bash)"" >> "$HOME/.bashrc"
 }
 
-
 function main() {
-    rm "$LOGFILE" 2> /dev/null
-    
     if [ "$USER" == "root" ]
     then
         echo "You are currently running as root. Please run this script as a normal user"
         exit
     fi
 
-    arch_update_packages >> "$LOGFILE"
-    arch_install_display_server >> "$LOGFILE"
+    update_packages
+    install_display_server
+    install_lightdm
+    install_awesome
+    disable_mouse_acceleration
+    apply_system_font
+    set_cinnamon_default_terminal
 
-    create_select_menu "What display manager do you want to use?" "LightDM;SDDM" 0
+    create_select_menu "Do you wish to install oh my starship?" "Yes;No" 0
     case "$?" in
-        0) arch_install_lightdm >> "$LOGFILE";;
-        1) arch_install_sddm >> "$LOGFILE";;
-    esac
-
-    arch_install_awesome >> "$LOGFILE"
-
-    create_select_menu "Do you wish to disable mouse acceleration?" "Yes;No" 0
-    case "$?" in
-        0) disable_mouse_acceleration >> "$LOGFILE";;
-    esac
-
-    apply_system_font >> "$LOGFILE"
-    set_cinnamon_default_terminal >> "$LOGFILE"
-
-    create_select_menu "Do you wish to install yay?" "Yes;No" 0
-    case "$?" in
-        0) install_yay >> "$LOGFILE";;
-    esac
-
-    create_select_menu "Do you wish to install oh my bash?" "Yes;No" 0
-    case "$?" in
-        0) install_oh_my_bash >> "$LOGFILE";;
+        0) install_starship
     esac
 }
+
 main

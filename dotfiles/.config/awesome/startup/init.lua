@@ -2,8 +2,9 @@ local awful = require('awful')
 
 local cmds =
 {
+    '~/.screenlayout/layout.sh',
     'feh --bg-fill ~/.wallpapers/bg.jpg',
-    'picom'
+    'picom',
 }
 
 do

@@ -43,7 +43,6 @@ screen.connect_signal('request::desktop_decoration', function(s)
                widgets.clock(),
                widgets.seperator(8, 8, '|'),
                widgets.layoutbox(s),
-
             }
          }
       }

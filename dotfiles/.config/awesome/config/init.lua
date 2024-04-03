@@ -2,7 +2,7 @@ local awful = require 'awful'
 
 local apps = {
    terminal       = 'alacritty',
-   editor         = 'nvim',
+   editor         = 'nano',
    file_browser   = 'nemo',
    web_browser    = 'firefox',
    code           = 'code',
@@ -10,6 +10,7 @@ local apps = {
    windows        = 'rofi options -theme Monokai -show window',
    color_picker   = 'gpick --pick',
    volume_control = 'pavucontrol',
+   lock_screen    = 'scrot /tmp/screenshot.png; ffmpeg -i /tmp/screenshot.png -y -vf "boxblur=50" -c:a copy /tmp/screenshotblur.png; i3lock -i /tmp/screenshotblur.png',
 }
 
 apps.editor_cmd = apps.terminal .. ' -e ' .. apps.editor
@@ -38,8 +39,8 @@ local colors = {
 }
 
 local fonts = {
-   mono = 'Cascadia Code',
-   sans = 'Cantarel'
+   mono = 'JetBrainsMono Nerd Font',
+   sans = 'JetBrainsMono Nerd Font'
 }
 
 local keys = {

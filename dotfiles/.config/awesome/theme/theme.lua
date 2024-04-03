@@ -7,7 +7,13 @@ local theme_folder             = script_path()
 
 local theme                    = {}
 
-theme.font                     = config.colors.font.sans
+-- Define the images to load
+theme.layout_floating          = theme_folder .. 'layouts/floatingw.png'
+theme.layout_tile              = theme_folder .. 'layouts/tilew.png'
+
+theme.icon_theme               = 'Fluent Dark'
+
+theme.font                     = config.fonts.sans
 
 -- theme.useless_gap              = dpi(5) -- Breaks mouse resizer
 theme.border_width             = dpi(3)
@@ -27,11 +33,5 @@ theme.menu_bg_normal           = config.colors.dark
 theme.menu_bg_focus            = config.colors.accent
 theme.menu_height              = dpi(25)
 theme.menu_width               = dpi(250)
-
--- Define the images to load
-theme.layout_floating          = theme_folder .. 'layouts/floatingw.png'
-theme.layout_tile              = theme_folder .. 'layouts/tilew.png'
-
-theme.icon_theme               = 'Fluent Dark'
 
 return theme
