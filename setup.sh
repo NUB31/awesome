@@ -89,7 +89,7 @@ function install_lightdm() {
 }
 
 function install_awesome() {
-    sudo apt install -y feh picom rofi firefox-esr alacritty nemo imagemagick gpick ffmpeg i3lock scrot pavucontrol nemo libxcb-xfixes0-dev git
+    sudo apt install -y libxcb-xfixes0-dev git
     sudo apt-get build-dep -y awesome
 
     cd $SCRIPTPATH
@@ -148,6 +148,8 @@ function main() {
     case "$?" in
         0) install_starship
     esac
+
+    sudo apt install -my feh picom rofi firefox-esr alacritty nemo imagemagick gpick ffmpeg i3lock scrot pavucontrol nemo
 }
 
 main
