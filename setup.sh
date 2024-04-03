@@ -92,6 +92,8 @@ function install_awesome() {
     sudo apt install -y feh picom rofi firefox-esr alacritty nemo imagemagick gpick ffmpeg i3lock scrot pavucontrol nemo libxcb-xfixes0-dev git
     sudo apt-get build-dep -y awesome
 
+    cd $SCRIPTPATH
+
     git clone git@github.com:awesomewm/awesome
 
     cd awesome
