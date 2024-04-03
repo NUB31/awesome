@@ -49,8 +49,9 @@ curl -sS https://starship.rs/install.sh | sh
 echo eval '"$(starship init bash)"' >> "$HOME/.bashrc"
 
 # Install software referenced in the awesome config
-# TODO: Add alacritty
 sudo apt install -my feh picom rofi firefox nemo imagemagick gpick ffmpeg i3lock scrot pavucontrol nemo
+sudo add-apt-repository ppa:aslatter/ppa -y
+sudo apt install alacritty
 
 # Install JetBrainsMono Nerd Font
 mkdir -p $HOME/.local/share/fonts
