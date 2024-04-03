@@ -11,7 +11,7 @@
 sudo apt update && sudo apt upgrade -y
 
 # Install dependencies
-sudo apt install -y xorg lightdm libxcb-xfixes0-dev git
+sudo apt install -y xorg libxcb-xfixes0-dev git
 sudo apt-get build-dep -y awesome
 
 # Build awesome
