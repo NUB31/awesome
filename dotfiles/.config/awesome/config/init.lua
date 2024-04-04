@@ -10,7 +10,7 @@ local apps = {
    windows        = 'rofi options -theme Monokai -show window',
    color_picker   = 'gpick --pick',
    volume_control = 'pavucontrol',
-   lock_screen    = 'scrot /tmp/screenshot.png; ffmpeg -i /tmp/screenshot.png -y -vf "boxblur=50" -c:a copy /tmp/screenshotblur.png; i3lock -i /tmp/screenshotblur.png',
+   lock_screen    = 'import -window root screenshot.png; ffmpeg -i /tmp/screenshot.png -y -vf "boxblur=50" -c:a copy /tmp/screenshotblur.png; i3lock -i /tmp/screenshotblur.png',
 }
 
 apps.editor_cmd = apps.terminal .. ' -e ' .. apps.editor
