@@ -160,6 +160,12 @@ awful.keyboard.append_global_keybindings {
          local tag = screen.tags[index]
          if tag then
             tag:view_only()
+
+            local c = awful.client.focus.history.get(mouse.screen, 0)
+            if not (c == nil) then
+              client.focus = c
+              c:raise()
+            end
          end
       end
    },
